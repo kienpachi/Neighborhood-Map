@@ -32,6 +32,13 @@ body {
     height: 100vh;
     vertical-align: top;
     overflow: scroll;
+    transition: 0.3s;
+}
+.collapse {
+    margin-left: -285px !important;
+}
+.filter {
+    display: flex;
 }
 .locations h1 {
     text-align: center;
@@ -41,6 +48,8 @@ body {
     font-size: 14px;
     height: 28px;
     padding-left: 10px;
+    border: none;
+    width: 100%;
 }
 #filter {
     height: 28px;
@@ -73,7 +82,7 @@ body {
 /* Map */
 .map {
     display: inline-block;
-    width: calc(100vw - 285px);
+    width: 100vw;
     vertical-align: top;
     margin: 0;
     display: flex;
@@ -85,12 +94,12 @@ body {
     height: 50px;
     background-color: #333;
 }
-#map-icon {
+#menu-icon {
     height: 100%;
     padding: 1em;
     cursor: pointer;
 }
-#map-icon:hover {
+#menu-icon:hover {
     background-color: #393939;
 }
 #map {
@@ -99,4 +108,3 @@ body {
     width: 100%;
     background-color: rebeccapurple;
 }
-
