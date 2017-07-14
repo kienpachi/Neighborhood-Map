@@ -96,7 +96,7 @@ body {
 }
 #menu-icon {
     height: 100%;
-    padding: 1em;
+    padding: 1.15em;
     cursor: pointer;
 }
 #menu-icon:hover {
@@ -106,5 +106,20 @@ body {
     display: inline-block;
     height: calc(100vh - 50px);
     width: 100%;
-    background-color: rebeccapurple;
+}
+.infowindow {
+    width: 240px;
+}
+.infowindow h3 {
+    color: #444;
+}
+.infowindow img {
+    max-height: 50px;
+    margin: 0 auto;
+    display: block;
+    margin-top: 10px;
+    max-width: 80px;
+}
+.infowindow p {
+    color: #555;
 }

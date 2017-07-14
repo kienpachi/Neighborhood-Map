@@ -7,7 +7,7 @@
         <title>Neighborhood Map</title>
         <link rel="stylesheet" href="css/style.css">
         <script type="text/javascript" src="js/libs/jquery.min.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
+        <!-- Loading the map -->
     </head>
     <body>
        <!-- locations -->
@@ -16,11 +16,12 @@
             <!-- Filter -->
             <div class="filter">
                 <input id="location-name" type="text">
-                <input id="filter" type="button" value="Filter">
+                <input data-bind="click: filter" id="filter" type="button" value="Filter">
             </div>
             <!-- List of locations -->
-            <div class="location-list">
+            <div data-bind="" class="location-list">
                <!-- Testing only [Remove Start] -->
+<!--
                 <p>12th St. Oakland City Center</p>
                 <p>16th St. Mission</p>
                 <p>19 St. Oakland</p>
@@ -30,6 +31,7 @@
                 <p>12th St. Oakland City Center</p>
                 <p>16th St. Mission</p>
                 <p>19 St. Oakland</p>
+-->
                <!-- Testing only [Remove End] -->
             </div>
         </aside>
@@ -37,10 +39,20 @@
         <section class="map">
            <!-- Options bar (only Menu for now) -->
             <div class="options-bar">
-                <img id="menu-icon" src="img/menu-icon.svg" alt="menu icon">
+                <img data-bind="click: toggle" id="menu-icon" src="img/menu-icon.svg" alt="menu icon">
             </div>
             <!-- Map -->
             <div id="map"></div>
         </section>
+        
+        
+        <!-- Knockout -->
+        <script type="text/javascript" src="js/libs/knockout-3.4.2.js"></script>
+        <!-- JavaScript -->
+        <script type="text/javascript" src="js/app.js"></script>
+        <!-- Loading the map using my API key -->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQVIeNmtMCtXzXH_To8dzmma5-QAiQQxo&v=3&callback=initMap">
+        </script>
+        
     </body>
 </html>
