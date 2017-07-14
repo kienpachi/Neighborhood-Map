@@ -9,7 +9,7 @@ var locations = [
     {title: 'On The Run', location: {lat: 30.0640521, lng: 31.02562129}, description: 'Best place to get morning coffe and snacks', img: 'img/OntheRun_logo.png'}
 ];
 
-var filteredLocations = ko.observableArray([]);
+var filteredLocations = [];
 var markers = [];
 var map, largeInfowindow;
 
@@ -102,7 +102,9 @@ var viewModel = {
         viewModel.render();
     },
     render: function () {
+        // empty the list for rendering
         $('.location-list').empty();
+        // push the titles of the filteredLocations
         for (var i = 0; i < filteredLocations.length; i++) {
             var HTMLLocationsList = '<p>' + filteredLocations[i].title + '</p>';
             $('.location-list').append(HTMLLocationsList);
