@@ -15,24 +15,12 @@
             <h1>Favorite Locations</h1>
             <!-- Filter -->
             <div class="filter">
-                <input id="location-name" type="text">
-                <input data-bind="click: filter" id="filter" type="button" value="Filter">
+                <input placeholder="filter.." id="location-name" type="text" data-bind="value: keywords, valueUpdate: 'keyup'" autocomplete="off">
+                <input data-bind="click: update" id="filter" type="button" value="Filter">
             </div>
             <!-- List of locations -->
-            <div data-bind="" class="location-list">
-               <!-- Testing only [Remove Start] -->
-<!--
-                <p>12th St. Oakland City Center</p>
-                <p>16th St. Mission</p>
-                <p>19 St. Oakland</p>
-                <p>12th St. Oakland City Center</p>
-                <p>16th St. Mission</p>
-                <p>19 St. Oakland</p>
-                <p>12th St. Oakland City Center</p>
-                <p>16th St. Mission</p>
-                <p>19 St. Oakland</p>
--->
-               <!-- Testing only [Remove End] -->
+            <div data-bind="foreach: filteredLocations" class="location-list">
+                <p data-bind="text: title"></p>
             </div>
         </aside>
         <!-- Map -->

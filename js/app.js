@@ -9,7 +9,7 @@ var locations = [
     {title: 'On The Run', location: {lat: 30.0640521, lng: 31.02562129}, description: 'Best place to get morning coffe and snacks', img: 'img/OntheRun_logo.png'}
 ];
 
-var filteredLocations = [];
+var filteredLocations = ko.observableArray([]);
 var markers = [];
 
 // --------------------- Google Map --------------------
@@ -39,9 +39,9 @@ function initMap() {
     }
     
     // Generate array of the list of markers based on the given filteredLocations
-    for (var i = 0; i < filteredLocations.length; i++) {
-        var position = filteredLocations[i].location;
-        var title = filteredLocations[i].title;
+    for (var i = 0; i < filteredLocations().length; i++) {
+        var position = filteredLocations()[i].location;
+        var title = filteredLocations()[i].title;
         // push the marker to my array of markers
         pushMarker(i, position, title);
     }
@@ -54,7 +54,7 @@ function initMap() {
         // make sure the marker info window is not opened already
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
-            infowindow.setContent('<div class="infowindow"><img src="' + filteredLocations[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + filteredLocations[marker.id].description + '</p></div>');
+            infowindow.setContent('<div class="infowindow"><img src="' + filteredLocations()[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + filteredLocations()[marker.id].description + '</p></div>');
             infowindow.open(map, marker);
             marker.setIcon('img/pin-selected.png');
             marker.setAnimation(google.maps.Animation.DROP);
@@ -69,8 +69,10 @@ function initMap() {
 
 // ------------------- ViewModel -----------------------
 var viewModel = {
+    // save the filter input in it
+    keywords: ko.observable(''),
     init: function() {
-        filteredLocations = locations;
+        filteredLocations = ko.observableArray(locations);
         // on load check the window size for filter collapse
         if ($(window).width() < 600) {
             viewModel.collapse();
@@ -82,8 +84,6 @@ var viewModel = {
                 viewModel.collapse();
             }
         });
-        // render the list of locations
-        viewModel.render();
     },
     toggle: function() {
         $('.locations').toggleClass('collapse');
@@ -91,9 +91,12 @@ var viewModel = {
     collapse: function() {
         $('.locations').addClass('collapse');
     },
+    update: function () {
+        initMap();
+    },
     filter: function() {
         // empty the filtered locations to add the new locations
-        filteredLocations = [];
+        filteredLocations = ko.observableArray([]);
         // get the keyword from the input
         // i added the .toLowerCase() so the filter isn't case sensitive
         var keyword = $('#location-name').val().toLowerCase();
@@ -105,15 +108,11 @@ var viewModel = {
                 filteredLocations.push(locations[i]);
             }
         }
-        initMap();
-        viewModel.render();
-    },
-    render: function () {
         // empty the list for rendering
         $('.location-list').empty();
         // push the titles of the filteredLocations
-        for (var i = 0; i < filteredLocations.length; i++) {
-            var HTMLLocationsList = '<p>' + filteredLocations[i].title + '</p>';
+        for (var j = 0; j < filteredLocations().length; j++) {
+            var HTMLLocationsList = '<p>' + filteredLocations()[j].title + '</p>';
             $('.location-list').append(HTMLLocationsList);
         }
     }
@@ -121,4 +120,7 @@ var viewModel = {
 
 viewModel.init();
 
+// apply knockout bindings
 ko.applyBindings(viewModel);
+// triggers the filter function whenever an input happens
+viewModel.keywords.subscribe(viewModel.filter);
