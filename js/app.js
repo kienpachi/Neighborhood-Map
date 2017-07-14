@@ -32,7 +32,7 @@ function initMap() {
             title: title,
             id: i,
             icon: 'img/pin.png'
-        })
+        });
         // push the marker to the array
         markers.push(marker);
         // Create event listener for it to open the info window
@@ -55,7 +55,7 @@ function initMap() {
             infowindow.addListener('closeclick', function () {
                 infowindow.setMarker(null);
             }
-        )}
+        )};
     }
 }
 
@@ -108,7 +108,7 @@ var viewModel = {
         for (var i = 0; i < filteredLocations.length; i++) {
             var HTMLLocationsList = '<p>' + filteredLocations[i].title + '</p>';
             $('.location-list').append(HTMLLocationsList);
-        };
+        }
     }
 };
 
