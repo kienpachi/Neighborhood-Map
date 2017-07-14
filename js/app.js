@@ -11,7 +11,6 @@ var locations = [
 
 var filteredLocations = [];
 var markers = [];
-var map, largeInfowindow;
 
 // --------------------- Google Map --------------------
 function initMap() {
@@ -21,25 +20,33 @@ function initMap() {
         zoom: 15
     });
     
-    // Generate array of the list of markers based on the given filteredLocations
-    for (var i = 0; i < filteredLocations.length; i++) {
-        var position = filteredLocations[i].location;
-        var title = filteredLocations[i].title;
+    // Creates the marker and push it to the array of markers
+    function pushMarker(id, position, title) {
         // Create a marker per location
         var marker = new google.maps.Marker({
             map: map,
             position: position,
             title: title,
-            id: i,
+            id: id,
             icon: 'img/pin.png'
         });
         // push the marker to the array
         markers.push(marker);
-        // Create event listener for it to open the info window
+        // Create event listener for it to open the info window for each marker
         marker.addListener('click', function () {
             populateInfoWindow(this, largeInfowindow);
-        })
+        });
     }
+    
+    // Generate array of the list of markers based on the given filteredLocations
+    for (var i = 0; i < filteredLocations.length; i++) {
+        var position = filteredLocations[i].location;
+        var title = filteredLocations[i].title;
+        // push the marker to my array of markers
+        pushMarker(i, position, title);
+    }
+    
+    
     // Create the infowindow i'm going to pop up on the marker
     var largeInfowindow = new google.maps.InfoWindow();
     // assign info window to the clicked marker
@@ -55,7 +62,7 @@ function initMap() {
             infowindow.addListener('closeclick', function () {
                 infowindow.setMarker(null);
             }
-        )};
+        );}
     }
 }
 
