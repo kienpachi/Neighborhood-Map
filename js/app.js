@@ -50,6 +50,11 @@ function initMap() {
     var largeInfowindow = new google.maps.InfoWindow();
 }
 
+// Handle error of displaying the Google map
+function mapError() {
+    $('.mapError').addClass('display-block');
+}
+
 // assign info window to the clicked marker
 function populateInfoWindow(marker, infowindow) {
     
