@@ -79,9 +79,8 @@ function populateInfoWindow(marker, infowindow) {
                 var url = 'http://en.wikipedia.org/wiki/' + articleList[0];
                 
                 /* since not all the locations I selected with this project has a wikipedia page
-                I made this funcution to exclude getting undefined results when the AJAX responds
-                current case scenario (4 out of 6) places has wiki page
-                */
+                *  I made this funcution to exclude getting undefined results when the AJAX responds
+                *  current case scenario (4 out of 6) places has wiki page */
                 if(!url.includes('undefined')) {
                     // build the infowindow content
                     infowindow.setContent('<div class="infowindow"><img src="' + locations[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + locations[marker.id].description + '</p><a href="' + url + '"  target="_blank">' + marker.title + ' <span> Wiki</span></a></div>');
@@ -125,9 +124,11 @@ var viewModel = {
             }
         });
     },
+    // toggle the filter menu
     toggle: function() {
         $('.locations').toggleClass('collapse');
     },
+    // close the filter menu
     collapse: function() {
         $('.locations').addClass('collapse');
     },
