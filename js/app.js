@@ -155,7 +155,13 @@ var viewModel = {
     },
     // display the marker info when clicking on an item inside the filter list
     info: function(title) {
-        alert(title);
+        var allMarkers = markers();
+        // select the marker that has a matching title and open it
+        for (var i in allMarkers) {
+            if(allMarkers[i].title === title) {
+                google.maps.event.trigger(markers()[i], 'click');
+            }
+        }
     }
 };
 
