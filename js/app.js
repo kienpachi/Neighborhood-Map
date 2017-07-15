@@ -65,7 +65,7 @@ function populateInfoWindow(marker, infowindow) {
         // handle faild request error
         var wikiRequestTimeout = setTimeout(function() {
             alert("Failed to get wikipedia resources");
-        }, 8000)
+        }, 8000);
         
         // run AJAX request to wikipedia
         $.ajax({
@@ -92,7 +92,7 @@ function populateInfoWindow(marker, infowindow) {
                 // clear the timeout if everything goes well
                 clearTimeout(wikiRequestTimeout);
             }
-        })
+        });
         // the the rest of the infowindow options
         infowindow.open(map, marker);
         marker.setIcon('img/pin-selected.png');
