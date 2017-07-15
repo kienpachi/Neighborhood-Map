@@ -6,7 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Neighborhood Map</title>
         <link rel="stylesheet" href="css/style.css">
-        <script type="text/javascript" src="js/libs/jquery.min.js"></script>
         <!-- Loading the map -->
     </head>
     <body>
@@ -15,8 +14,8 @@
             <h1>Favorite Locations</h1>
             <!-- Filter -->
             <div class="filter">
-                <input placeholder="filter.." id="location-name" type="text" data-bind="value: keywords, valueUpdate: 'keyup'" autocomplete="off">
-                <input data-bind="click: update" id="filter" type="button" value="Filter">
+                <input placeholder="filter.." id="location-name" type="text" data-bind="textInput: keywords, valueUpdate: 'keyup'" autocomplete="off">
+<!--                <input data-bind="click: update" id="filter" type="button" value="Filter">-->
             </div>
             <!-- List of locations -->
             <div data-bind="foreach: filteredLocations" class="location-list">
@@ -34,8 +33,10 @@
         </section>
         
         
+        <!-- JQuery -->
+        <script type="text/javascript" src="js/libs/jquery.min.js"></script>
         <!-- Knockout -->
-        <script async type="text/javascript" src="js/libs/knockout-3.4.2.js"></script>
+        <script type="text/javascript" src="js/libs/knockout-3.4.2.js"></script>
         <!-- JavaScript -->
         <script async type="text/javascript" src="js/app.js"></script>
         <!-- Loading the map using my API key -->

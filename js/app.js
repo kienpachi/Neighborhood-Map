@@ -10,7 +10,7 @@ var locations = [
 ];
 
 var filteredLocations = ko.observableArray([]);
-var markers = [];
+var markers = ko.observableArray([]);
 
 // --------------------- Google Map --------------------
 function initMap() {
@@ -38,10 +38,10 @@ function initMap() {
         });
     }
     
-    // Generate array of the list of markers based on the given filteredLocations
-    for (var i = 0; i < filteredLocations().length; i++) {
-        var position = filteredLocations()[i].location;
-        var title = filteredLocations()[i].title;
+    // Generate array of the list of markers based on the given locations
+    for (var i = 0; i < locations.length; i++) {
+        var position = locations[i].location;
+        var title = locations[i].title;
         // push the marker to my array of markers
         pushMarker(i, position, title);
     }
@@ -54,7 +54,7 @@ function initMap() {
         // make sure the marker info window is not opened already
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
-            infowindow.setContent('<div class="infowindow"><img src="' + filteredLocations()[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + filteredLocations()[marker.id].description + '</p></div>');
+            infowindow.setContent('<div class="infowindow"><img src="' + locations[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + locations[marker.id].description + '</p></div>');
             infowindow.open(map, marker);
             marker.setIcon('img/pin-selected.png');
             marker.setAnimation(google.maps.Animation.DROP);
@@ -69,10 +69,10 @@ function initMap() {
 
 // ------------------- ViewModel -----------------------
 var viewModel = {
-    // save the filter input in it
+    filteredLocations: ko.observableArray(locations),
+    // bind the filter input with this observable
     keywords: ko.observable(''),
     init: function() {
-        filteredLocations = ko.observableArray(locations);
         // on load check the window size for filter collapse
         if ($(window).width() < 600) {
             viewModel.collapse();
@@ -91,29 +91,24 @@ var viewModel = {
     collapse: function() {
         $('.locations').addClass('collapse');
     },
-    update: function () {
-        initMap();
-    },
-    filter: function() {
-        // empty the filtered locations to add the new locations
-        filteredLocations = ko.observableArray([]);
-        // get the keyword from the input
-        // i added the .toLowerCase() so the filter isn't case sensitive
-        var keyword = $('#location-name').val().toLowerCase();
+    filter: function(value) {
         // create my new filtered locations
         for (var i = 0; i < locations.length; i++) {
             // in case the title includes the keyword
-            if (locations[i].title.toLowerCase().includes(keyword)) {
-                // push that array element to the filtered locations
-                filteredLocations.push(locations[i]);
+            if (!locations[i].title.toLowerCase().includes(viewModel.keywords().toLowerCase())) {
+                // Hide the markers that is not part of the filter search
+                markers()[i].setVisible(false);
+            } else {
+                markers()[i].setVisible(true);
             }
         }
-        // empty the list for rendering
-        $('.location-list').empty();
-        // push the titles of the filteredLocations
-        for (var j = 0; j < filteredLocations().length; j++) {
-            var HTMLLocationsList = '<p>' + filteredLocations()[j].title + '</p>';
-            $('.location-list').append(HTMLLocationsList);
+        
+        viewModel.filteredLocations([]);
+        
+        for(var index in locations) {
+            if(locations[index].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+                viewModel.filteredLocations.push(locations[index]);
+            }
         }
     }
 };
@@ -122,5 +117,5 @@ viewModel.init();
 
 // apply knockout bindings
 ko.applyBindings(viewModel);
-// triggers the filter function whenever an input happens
+// triggers the filter function whenever keywords change
 viewModel.keywords.subscribe(viewModel.filter);
