@@ -62,7 +62,12 @@ function populateInfoWindow(marker, infowindow) {
         var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
         
         var url;
+        // handle faild request error
+        var wikiRequestTimeout = setTimeout(function() {
+            alert("Failed to get wikipedia resources");
+        }, 8000)
         
+        // run AJAX request to wikipedia
         $.ajax({
             url: wikiUrl,
             dataType: "jsonp",
@@ -70,17 +75,23 @@ function populateInfoWindow(marker, infowindow) {
             success: function(response) {
                 // get array of articles in Wiki with my search
                 var articleList = response[1];
-                // create only 1 artile link, that's all I need for this project
+                // create only 1 article link, that's all I need for this project
                 var url = 'http://en.wikipedia.org/wiki/' + articleList[0];
                 
-                // if the place has an article on wikipedia add it to the DOM
+                /* since not all the locations I selected with this project has a wikipedia page
+                I made this funcution to exclude getting undefined results when the AJAX responds
+                current case scenario (4 out of 6) places has wiki page
+                */
                 if(!url.includes('undefined')) {
+                    // build the infowindow content
                     infowindow.setContent('<div class="infowindow"><img src="' + locations[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + locations[marker.id].description + '</p><a href="' + url + '"  target="_blank">' + marker.title + ' <span> Wiki</span></a></div>');
                 }
                 // otherwise only get the basic information
                 else {
                     infowindow.setContent('<div class="infowindow"><img src="' + locations[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + locations[marker.id].description + '</p></div>');
                 }
+                // clear the timeout if everything goes well
+                clearTimeout(wikiRequestTimeout);
             }
         })
         // the the rest of the infowindow options
