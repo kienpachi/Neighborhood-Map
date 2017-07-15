@@ -4,7 +4,7 @@ var locations = [
     {title: 'Technology Innovation and Entrepreneurship Center', location: {lat: 30.06809583, lng: 31.01957291}, description: 'This is where I currently work as an entrepreneure and a freelancer', img: 'img/TIEC_logo.png'},
     {title: 'Smart Village Mosque', location: {lat: 30.06922395, lng: 31.01958364}, description: 'Here is where I pray', img: 'img/mosuqe.png'},
     {title: 'Microsoft Egypt', location: {lat: 30.07111807, lng: 31.01674989}, description: 'This is where my I used to work after college graduation as a UI UX Developer', img: 'img/Microsoft_logo.png'},
-    {title: 'Carrefour Dandy Mega Mall', location: {lat: 30.06322569, lng: 31.02743983}, description: 'One of my favorite places for shopping', img: 'img/Carrefour_logo.png'},
+    {title: 'Carrefour', location: {lat: 30.06322569, lng: 31.02743983}, description: 'One of my favorite places for shopping', img: 'img/Carrefour_logo.png'},
     {title: 'QNB Bank', location: {lat: 30.0623807, lng: 31.02832496}, description: 'That is the bank I currently deal with, pretty good one', img: 'img/QNB-logo.png'},
     {title: 'On The Run', location: {lat: 30.0640521, lng: 31.02562129}, description: 'Best place to get morning coffe and snacks', img: 'img/OntheRun_logo.png'}
 ];
@@ -46,24 +46,55 @@ function initMap() {
         pushMarker(i, position, title);
     }
     
-    
     // Create the infowindow i'm going to pop up on the marker
     var largeInfowindow = new google.maps.InfoWindow();
-    // assign info window to the clicked marker
-    function populateInfoWindow(marker, infowindow) {
-        // make sure the marker info window is not opened already
-        if (infowindow.marker != marker) {
-            infowindow.marker = marker;
-            infowindow.setContent('<div class="infowindow"><img src="' + locations[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + locations[marker.id].description + '</p></div>');
-            infowindow.open(map, marker);
-            marker.setIcon('img/pin-selected.png');
-            marker.setAnimation(google.maps.Animation.DROP);
-            // make sure the marker is cleared if the infowindow is closed
-            infowindow.addListener('closeclick', function () {
-                infowindow.setMarker(null);
+}
+
+// assign info window to the clicked marker
+function populateInfoWindow(marker, infowindow) {
+    
+    // make sure the marker info window is not opened already
+    if (infowindow.marker != marker) {
+        // if not, then open it
+        infowindow.marker = marker;
+        
+        // Wikipedia AJAX request
+        var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
+        
+        var url;
+        
+        $.ajax({
+            url: wikiUrl,
+            dataType: "jsonp",
+            
+            success: function(response) {
+                // get array of articles in Wiki with my search
+                var articleList = response[1];
+                // create only 1 artile link, that's all I need for this project
+                var url = 'http://en.wikipedia.org/wiki/' + articleList[0];
+                
+                // if the place has an article on wikipedia add it to the DOM
+                if(!url.includes('undefined')) {
+                    infowindow.setContent('<div class="infowindow"><img src="' + locations[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + locations[marker.id].description + '</p><a href="' + url + '"  target="_blank">' + marker.title + ' <span> Wiki</span></a></div>');
+                }
+                // otherwise only get the basic information
+                else {
+                    infowindow.setContent('<div class="infowindow"><img src="' + locations[marker.id].img + '"/><h3>' + marker.title + '</h3><p>' + locations[marker.id].description + '</p></div>');
+                }
             }
-        );}
-    }
+        })
+        // Create the infowindow and include the ajax response if exists
+
+        
+        
+        infowindow.open(map, marker);
+        marker.setIcon('img/pin-selected.png');
+        marker.setAnimation(google.maps.Animation.DROP);
+        // make sure the marker is cleared if the infowindow is closed
+        infowindow.addListener('closeclick', function () {
+            infowindow.setMarker(null);
+        }
+    );}
 }
 
 
@@ -91,6 +122,7 @@ var viewModel = {
     collapse: function() {
         $('.locations').addClass('collapse');
     },
+    // triggeres whenever keywords change
     filter: function(value) {
         // create my new filtered locations
         for (var i = 0; i < locations.length; i++) {
@@ -102,16 +134,22 @@ var viewModel = {
                 markers()[i].setVisible(true);
             }
         }
-        
+        // empty the filter to add the new locations which are filtered
         viewModel.filteredLocations([]);
-        
+        // search through locations for the input keyword
         for(var index in locations) {
             if(locations[index].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+                // add them to the observable array filteredLocations
                 viewModel.filteredLocations.push(locations[index]);
             }
         }
+    },
+    // display the marker info when clicking on an item inside the filter list
+    info: function(title) {
+        alert(title);
     }
 };
+
 
 viewModel.init();
 

@@ -9,6 +9,13 @@
         <!-- Loading the map -->
     </head>
     <body>
+      
+        <!-- Shows when there's a problem loading he map -->
+        <div class="problem">
+            <h4>There's a problem diplaying the Google map</h4>
+            <p>Please try again later..</p>
+        </div>
+        
        <!-- locations -->
         <aside class="locations">
             <h1>Favorite Locations</h1>
@@ -19,7 +26,8 @@
             </div>
             <!-- List of locations -->
             <div data-bind="foreach: filteredLocations" class="location-list">
-                <p data-bind="text: title"></p>
+               <!-- Added a click bind to call info function and send the title as a parameter -->
+                <p data-bind="click: $parent.info.bind(this, $data.title), text: title"></p>
             </div>
         </aside>
         <!-- Map -->

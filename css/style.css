@@ -43,6 +43,7 @@ body {
 .locations h1 {
     text-align: center;
     cursor: context-menu;
+    color: #34b1f2;
 }
 #location-name {
     font-size: 14px;
@@ -88,6 +89,27 @@ body {
     display: flex;
     flex-wrap: wrap;
 }
+.problem {
+    height: 100vh;
+    background-color: rgba(0,0,0,0.7);
+    position: absolute;
+    z-index: 1;
+    width: 100vw;
+    color: #fff;
+    text-align: center;
+    display: none;
+}
+.problem h4 {
+    margin-top: 45vh;
+    font-size: 20px;
+}
+.problem p {
+    border-top: 1px solid #fff;
+    display: block;
+    margin: 0 auto;
+    width: 20em;
+    padding-top: 5px;
+}
 .options-bar {
     display: inline-block;
     width: 100%;
@@ -122,4 +144,20 @@ body {
 }
 .infowindow p {
     color: #555;
+}
+.infowindow a {
+    color: #333;
+    font-weight: 100;
+    background-color: lightblue;
+    padding: 0px 10px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+.infowindow a span {
+    font-weight: bold;
+    font-size: 14px;
+}
+.display-block {
+    display: block !important;
 }
