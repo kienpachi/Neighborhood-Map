@@ -83,13 +83,11 @@ function populateInfoWindow(marker, infowindow) {
                 }
             }
         })
-        // Create the infowindow and include the ajax response if exists
-
-        
-        
+        // the the rest of the infowindow options
         infowindow.open(map, marker);
         marker.setIcon('img/pin-selected.png');
         marker.setAnimation(google.maps.Animation.DROP);
+        
         // make sure the marker is cleared if the infowindow is closed
         infowindow.addListener('closeclick', function () {
             infowindow.setMarker(null);
