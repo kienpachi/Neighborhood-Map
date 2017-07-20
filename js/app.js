@@ -64,7 +64,7 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.marker = marker;
         
         // Wikipedia AJAX request
-        var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
+        var wikiUrl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
         
         var url;
         // handle faild request error
